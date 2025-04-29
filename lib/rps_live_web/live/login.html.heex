@@ -1,0 +1,97 @@
+<div class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-100 to-indigo-200 p-6">
+  <h1 class="text-4xl font-bold mb-8">Enter your Name</h1>
+
+  <form id="login-form" class="flex flex-col gap-6 w-full max-w-md">
+    <input
+      type="text"
+      id="name-input"
+      name="name"
+      placeholder="Your name"
+      required
+      class="text-xl p-4 rounded-lg border-2 border-indigo-500"
+    />
+
+    <!-- Error message -->
+  <div id="name-error" class="text-red-600 text-sm mt-2">
+    <%= if @error do %>
+      <%= @error %>
+    <% end %>
+  </div>
+    <button
+      type="submit"
+      id="login-submit"
+      class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg text-xl disabled:opacity-50"
+      disabled
+    >
+      Enter
+    </button>
+
+
+
+  </form>
+
+</div>
+
+<%= if @login_success do %>
+  <script>
+    const name = "<%= @login_success.name %>";
+    const fp = "<%= @login_success.fp %>";
+
+    localStorage.setItem("rps_name", name);
+    localStorage.setItem("rps_fp", fp);
+
+    window.location.href = "/rps";
+  </script>
+<% end %>
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("login-form");
+    const nameInput = document.getElementById("name-input");
+    const nameError = document.getElementById("name-error");
+    const submitButton = document.getElementById("login-submit");
+
+    function validateName() {
+      const name = nameInput.value.trim();
+
+      if (name.length < 3) {
+        nameError.textContent = "Name must be at least 3 characters.";
+        nameError.classList.remove("hidden");
+        submitButton.disabled = true;
+      } else if (name.length > 100) {
+        nameError.textContent = "Name must be at most 100 characters.";
+        nameError.classList.remove("hidden");
+        submitButton.disabled = true;
+      } else if (!/^[a-zA-Z0-9]+$/.test(name)) {
+        nameError.textContent = "Name must be alphanumeric (no spaces or special characters).";
+        nameError.classList.remove("hidden");
+        submitButton.disabled = true;
+      } else {
+        nameError.textContent = "";
+        nameError.classList.add("hidden");
+        submitButton.disabled = false;
+      }
+    }
+
+    nameInput.addEventListener("input", validateName);
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const name = nameInput.value.trim();
+      const fingerprint = "fp-" + Math.random().toString(36).substring(2, 10);
+
+      // Save into localStorage
+      localStorage.setItem("rps_name", name);
+      localStorage.setItem("rps_fp", fingerprint);
+
+      // Redirect to game
+      window.location.href = `/rps`;
+    });
+
+    // Auto-login logic also stays here (if you want)
+  });
+</script>
+

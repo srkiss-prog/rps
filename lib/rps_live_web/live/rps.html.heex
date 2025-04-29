@@ -1,0 +1,101 @@
+<div class="flex flex-col items-center justify-start min-h-screen bg-gradient-to-b from-blue-100 to-indigo-200 pt-28 p-6">
+
+  <%= if @authenticated? do %>
+      <div id="scoreboard" phx-hook="ScoreAnimate" class="flex justify-center gap-8 text-xl md:text-2xl font-semibold py-4 transition-all duration-500">
+        <div class="text-green-600 transition-transform duration-300 ease-in-out scale-100" id="score-player">
+          🧍‍♂️ <%= @name || "You" %>: <%= @score.player %>
+        </div>
+        <div class="text-gray-700 transition-transform duration-300 ease-in-out scale-100" id="score-draw">
+          🤝 Draw: <%= @score.draw %>
+        </div>
+      <div class="text-red-600 transition-transform duration-300 ease-in-out scale-100" id="score-cpu">
+        🤖 CPU: <%= @score.cpu %>
+      </div>
+    </div>
+    <!-- Add this separator right after the scoreboard -->
+    <div class="border-t border-indigo-300 mb-6 w-4/5 mx-auto"></div>
+
+    <div class="text-4xl text-blue-600 font-extrabold animate-pulse mb-8">
+      Time left: <%= @timer %>s
+    </div>
+
+
+
+
+      <!-- Choices -->
+      <div class="flex gap-8 mb-10">
+        <%= for {choice, emoji} <- [{"rock", "🪨"}, {"paper", "📄"}, {"scissors", "✂️"}] do %>
+          <button
+            phx-click="choose"
+            phx-value-choice={choice}
+            disabled={!@choice_enabled}
+            class={
+              "text-6xl transform transition " <>
+              if @choice_enabled do
+                "hover:scale-125 hover:rotate-6 active:scale-90"
+              else
+                "opacity-50 cursor-not-allowed"
+              end
+            }
+          >
+            <%= emoji %>
+          </button>
+        <% end %>
+
+      </div>
+
+      <!-- Dynamic part (below buttons) -->
+      <div class="flex flex-col items-center space-y-6">
+
+        <!-- Countdown -->
+        <%= if @loading do %>
+          <div class="text-6xl animate-bounce">
+            👊
+          </div>
+        <% end %>
+
+
+        <!-- Results -->
+        <%= if @user_choice != nil and @cpu_choice != nil do %>
+          <div class="text-center">
+            <p class="text-3xl mb-4">You chose: <%= choice_to_emoji(@user_choice) %></p>
+            <p class="text-3xl mb-4">CPU chose: <%= choice_to_emoji(@cpu_choice) %></p>
+
+            <h2 class="text-4xl font-bold mt-6">
+              <%= case @result do %>
+                <% :user -> %>You win! 🎉
+                <% :cpu -> %>CPU wins! 💻
+                <% :draw -> %>It's a draw! 🤝
+              <% end %>
+            </h2>
+          </div>
+        <% end %>
+
+        <!-- Placeholder before first game -->
+        <%= if @user_choice == nil and not @loading do %>
+          <p class="text-2xl text-gray-600">Waiting for your move...</p>
+        <% end %>
+
+        <%= if @result == :timeout do %>
+        <div class="flex justify-center mt-10">
+          <p class="text-4xl font-bold text-red-600 text-center">
+            Game Over! ⏳ You didn't choose in time!
+          </p>
+        </div>
+      <% end %>
+
+          <%= if @restart_timer do %>
+        <div class="text-2xl text-red-600 font-bold animate-pulse mt-8">
+          Next round in <%= @restart_timer %>...
+        </div>
+      <% end %>
+
+    </div>
+
+  <% else %>
+  <div class="text-center mt-12 text-gray-600 text-lg">
+    Authenticating...
+  </div>
+  <% end %>
+
+</div>
