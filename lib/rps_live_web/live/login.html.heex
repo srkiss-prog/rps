@@ -60,8 +60,8 @@
         nameError.textContent = "Name must be at least 3 characters.";
         nameError.classList.remove("hidden");
         submitButton.disabled = true;
-      } else if (name.length > 100) {
-        nameError.textContent = "Name must be at most 100 characters.";
+      } else if (name.length > 13) {
+        nameError.textContent = "Name must be at most 13 characters.";
         nameError.classList.remove("hidden");
         submitButton.disabled = true;
       } else if (!/^[a-zA-Z0-9]+$/.test(name)) {

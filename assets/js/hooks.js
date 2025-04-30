@@ -34,10 +34,10 @@ Hooks.ScoreAnimate = {
       const el = document.getElementById(id);
       if (el) {
         el.classList.remove("scale-100");
-        el.classList.add("scale-125");
+        el.classList.add("scale-150");
 
         setTimeout(() => {
-          el.classList.remove("scale-125");
+          el.classList.remove("scale-150");
           el.classList.add("scale-100");
         }, 200); // Animate back after 200ms
       }

@@ -82,7 +82,7 @@ defmodule RpsLiveWeb.Rps do
 
 
   # Simple validations
-  defp valid_name?(name), do: String.length(name) >= 3 and String.length(name) <= 100 and name =~ ~r/^[a-zA-Z0-9]+$/
+  defp valid_name?(name), do: String.length(name) >= 3 and String.length(name) <= 13 and name =~ ~r/^[a-zA-Z0-9]+$/
   defp valid_fp?(fp), do: String.length(fp) > 5
 
 

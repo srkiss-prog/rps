@@ -1,17 +1,24 @@
 <div class="flex flex-col items-center justify-start min-h-screen bg-gradient-to-b from-blue-100 to-indigo-200 pt-28 p-6">
 
   <%= if @authenticated? do %>
-      <div id="scoreboard" phx-hook="ScoreAnimate" class="flex justify-center gap-8 text-xl md:text-2xl font-semibold py-4 transition-all duration-500">
-        <div class="text-green-600 transition-transform duration-300 ease-in-out scale-100" id="score-player">
-          🧍‍♂️ <%= @name || "You" %>: <%= @score.player %>
-        </div>
-        <div class="text-gray-700 transition-transform duration-300 ease-in-out scale-100" id="score-draw">
-          🤝 Draw: <%= @score.draw %>
-        </div>
-      <div class="text-red-600 transition-transform duration-300 ease-in-out scale-100" id="score-cpu">
+ 
+
+        <div
+      id="scoreboard"
+      phx-hook="ScoreAnimate"
+      class="flex flex-nowrap overflow-x-auto justify-center items-center text-sm sm:text-base md:text-lg font-semibold py-4 gap-x-4 sm:gap-x-6 md:gap-x-8 w-full transition-all duration-500"
+    >
+      <div id="score-player" class="text-green-600 whitespace-nowrap transition-transform duration-300 ease-in-out scale-100">
+        🧍‍♂️ <%= @name || "You" %>: <%= @score.player %>
+      </div>
+      <div id="score-draw" class="text-gray-700 whitespace-nowrap transition-transform duration-300 ease-in-out scale-100">
+        🤝 Draw: <%= @score.draw %>
+      </div>
+      <div id="score-cpu" class="text-red-600 whitespace-nowrap transition-transform duration-300 ease-in-out scale-100">
         🤖 CPU: <%= @score.cpu %>
       </div>
     </div>
+
     <!-- Add this separator right after the scoreboard -->
     <div class="border-t border-indigo-300 mb-6 w-4/5 mx-auto"></div>
 
